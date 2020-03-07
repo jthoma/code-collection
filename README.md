@@ -1,5 +1,4 @@
-# code-collection
-Just a collection of code snippets
+# Just a collection of code snippets
 
 * [AWS/Cloud Watch UAPI xml logger](./aws/cloud-watch-uapi-xml-logger.js) 
 
