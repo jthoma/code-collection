@@ -47,8 +47,8 @@ async function tryWriteLog(logStream, records) {
     cloudwatchlogs.putLogEvents(params, async function (err, data) {
       if (err) {
         console.log(err, err.stack); // an error occurred
-        if(err.code === 'InvalidSequenceTokenException' && typeCheck(err.expectedSequenceToken, 'String')){
-          logStream.sequenceToken = err.expectedSequenceToken;
+        if(err.code === 'InvalidSequenceTokenException' && typeCheck(err.message, 'String')){
+          logStream.sequenceToken = err.message.match(/The next expected sequenceToken is: (\d+)/)[1];
           return await tryWriteLog(logStream, records, count++);
         }
       }
