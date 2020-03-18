@@ -2,7 +2,7 @@
 
 * [AWS/Cloud Watch UAPI xml logger](./aws/cloud-watch-uapi-xml-logger.js) 
 * [Node/API Key Generator](./node/api-key.js)
-
+* [AWS/SNS to CloudWatch log](./aws/sns-cw-log.js)
 
 ## AWS/Cloud Watch UAPI xml logger
 
@@ -54,3 +54,10 @@ A preset function which generates random string from alphanumerals along with so
 #### .any_key(int length, [] chars)
 
 This method provides the most flexibilty that one should specify the char list as array and length as a rounded number. The generated string will be of the said length and uses random chars from supplied list. 
+
+## AWS/SNS to CloudWatch log
+
+### Introduction
+
+Nothing much, an SNS Payload with solid subject and string message is expected which will be consoled by this lambda.
+
