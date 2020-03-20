@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  get-my-ip
+
+  Just personal service to echo source ip. 
+  
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  EchoIPFn:
+    Type: AWS::Serverless::Function 
+    Properties:
+      FunctionName: echo-my-ip
+      CodeUri: echo-ip/
+      Handler: index.handler
+      Runtime: nodejs12.x
+      Events:
+        EchoIPapi:
+          Type: Api 
+          Properties:
+            Path: /ip
+            Method: get
+
+Outputs:
+  EchoIPFnAPI:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ip/"

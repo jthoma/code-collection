@@ -4,6 +4,7 @@
 * [Node/API Key Generator](./node/api-key.js)
 * [AWS/SNS to CloudWatch log](./aws/sns-cw-log.js)
 * [Node/Postman to code builder](./node/generator.js)
+* [AWS/Echo MY IP](./aws/echo-my-ip)
 
 ## AWS/Cloud Watch UAPI xml logger
 
