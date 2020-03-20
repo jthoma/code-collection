@@ -3,6 +3,7 @@
 * [AWS/Cloud Watch UAPI xml logger](./aws/cloud-watch-uapi-xml-logger.js) 
 * [Node/API Key Generator](./node/api-key.js)
 * [AWS/SNS to CloudWatch log](./aws/sns-cw-log.js)
+* [Node/Postman to code builder](./node/generator.js)
 
 ## AWS/Cloud Watch UAPI xml logger
 
@@ -61,3 +62,6 @@ This method provides the most flexibilty that one should specify the char list a
 
 Nothing much, an SNS Payload with solid subject and string message is expected which will be consoled by this lambda.
 
+## Postman to NodeJS Code Generator
+
+Generate code abstraction by reading the postman export. Any rest api can be abstracted to node.js code module using this code writer.
