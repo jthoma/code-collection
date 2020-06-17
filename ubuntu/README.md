@@ -20,8 +20,7 @@ Now create a project folder run the [aws-env-init](./aws-env-init.sh) from this 
 Aah! if you have to work on different regions, now is a time to create region based folders and in each of them add a new '.env' file with 
 ```
 export AWS_DEFAULT_REGION=`basename $(pwd)`
-'''
-
+```
 <a name="permitme"></a>
 ## aws-permit-me
 
