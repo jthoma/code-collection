@@ -5,6 +5,7 @@
 * [AWS/SNS to CloudWatch log](./aws/sns-cw-log.js)
 * [Node/Postman to code builder](./node/generator.js)
 * [AWS/Echo MY IP](./aws/echo-my-ip)
+* [UBUNTU](./ubuntu/)
 
 ## AWS/Cloud Watch UAPI xml logger
 
