@@ -36,10 +36,6 @@ server {
         try_files $uri =404;
     }
 
-    gzip on;
-    gzip_proxied any;
-    gzip_types text/plain text/html text/css application/json application/javascript application/x-javascript text/javascript text;
-
     set $skip_cache 0;
 
     # POST requests and URLs with a query string should always go to PHP
@@ -67,10 +63,6 @@ server {
       index  index.html $wp_index;
       try_files $uri $uri/ /$wp_index?$args;
     }    
-
-    location ~ /purge(/.*) {
-        fastcgi_cache_purge WORDPRESS "$scheme$request_method$host$1";
-    }	
 
     location = /wp-login.php {
         limit_req zone=one burst=1 nodelay;
@@ -117,10 +109,6 @@ server {
     location ~ / {
       autoindex off; 
     }
-
-    gzip on;
-    gzip_proxied any;
-    gzip_types text/plain text/html text/css application/json application/javascript application/x-javascript text/javascript text;
 
     location ~* .(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg
                   |jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid
