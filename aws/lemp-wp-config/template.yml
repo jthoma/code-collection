@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Wordpress Config File Creator
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  phpserver:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-phpserver
+      Description: PHP Webserver
+      CodeUri: src/
+      Runtime: provided
+      Handler: index.php
+      MemorySize: 128
+      Timeout: 30
+      Tracing: Active
+      Layers:
+        - !Sub arn:aws:lambda:${AWS::Region}:887080169480:layer:php73:3
+      Events:
+        api:
+          Type: Api
+          Properties:
+            Path: /{action}
+            Method: POST
+
+Outputs:
+  InvokeURL:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/<action>"
