@@ -5,6 +5,7 @@
 * [AWS/SNS to CloudWatch log](./aws/sns-cw-log.js)
 * [Node/Postman to code builder](./node/generator.js)
 * [AWS/Echo MY IP](./aws/echo-my-ip)
+* [AWS/VPC::EIP::Lambda](./aws/vpc-eip-lambda)
 * [AWS/Wordpress and Nginx Config](./aws/lemp-wp-config)
 * [UBUNTU](./ubuntu/)
 
