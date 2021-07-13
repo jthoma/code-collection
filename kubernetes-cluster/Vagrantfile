@@ -1,0 +1,34 @@
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  config.vm.provision "shell", path: "bootstrap.sh"
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 2048
+    v.cpus = 2
+  end
+
+  config.vm.define "kube-master" do |pam|
+    pam.vm.network "private_network", ip: "192.168.33.10"
+    pam.vm.hostname = "kubemaster"
+    pam.vm.box = "ubuntu/focal64"
+    pam.vm.provision "shell", path: "kube-init.sh"
+  end
+
+  config.vm.define "kube-node-one" do |pac|
+    pac.vm.network "private_network", ip: "192.168.33.21"
+    pac.vm.hostname = "kube-node-one"
+    pac.vm.box = "ubuntu/focal64"
+    pac.vm.provision "shell", path: "kube-join.sh"
+  end
+    
+  config.vm.define "kube-node-two" do |pau|
+    pau.vm.network "private_network", ip: "192.168.33.22"
+    pau.vm.hostname = "kube-node-two"
+    pau.vm.box = "ubuntu/focal64"
+    pau.vm.provision "shell", path: "kube-join.sh"
+  end
+
+      
+end

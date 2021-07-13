@@ -1,0 +1,222 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SAM Template for Deploying EC2, Machine Role, EC2 m5.large, EIP
+
+Parameters:
+  # This is a security group which permits all ports from my ip only
+  DevopsFireWall:
+    Description: The DevOps Firewall Security Group ID
+    Type: AWS::EC2::SecurityGroup::Id 
+  # ID of an existing VPC to create internal firewall and deploy the machines  
+  TheVPC:
+    Description: ID of An existing VPC
+    Type: AWS::EC2::VPC::Id   
+  # AMI id - this is ubuntu 18.04 on ap-south-1  
+  ImageID:
+    Description: AMI id preferred to use ubuntu 18.04
+    Type: AWS::EC2::Image::Id
+  # Intstance type ( defines memory and processor )  
+  InstanceSize:
+    Description: Instance Size
+    Type: String
+    Default: c5.large
+  # SSH key pair, will need to ssh into sometimes  
+  KeyPair:
+    Description: Key Pair Name - Should be existing key pair
+    Type: String
+
+
+Resources: 
+
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: BucketOwnerFullControl
+
+  # S3 VPC Endpoint
+  S3Endpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName: !Sub 'com.amazonaws.${AWS::Region}.s3'
+      VpcId: !Ref TheVPC
+
+  # Policy on the bucket permitting the VPC Endpoint
+  BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action:
+              - 's3:PutObject'
+              - 's3:GetObject'
+            Effect: Allow
+            Resource: !Join
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref S3Bucket
+                - /*
+            Principal: '*'
+            Condition:
+              StringEquals:
+                'aws:sourceVpce': !Ref S3Endpoint
+
+  # create an internal firewall - security group
+  FireWallInternal:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Internal All Traffic Group 
+      VpcId: !Ref TheVPC
+
+  # this rule opens all ports and protocols with source as the same security group
+  # when multiple ec2 is attached they can communicate internally without issues
+  FireWallRuleInternal:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: "-1"
+      SourceSecurityGroupId:
+        Fn::GetAtt:
+        - FireWallInternal
+        - GroupId
+      GroupId:
+        Fn::GetAtt:
+        - FireWallInternal
+        - GroupId
+
+  # the EC2 machine role, which is the recommended practice to provide access to aws services internally
+  MachineRole: 
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "ec2.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: CFN2StackAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: 
+                  - "cloudformation:SignalResource"
+                  - "cloudformation:DescribeStackResource"
+                Resource: !Sub "${AWS::StackId}"
+              - Effect: Allow
+                Action: 
+                  - 's3:PutObject'
+                  - 's3:GetObject'
+                Resource: !Join
+                  - ''
+                  - - 'arn:aws:s3:::'
+                    - !Ref S3Bucket
+                    - /*
+
+  # the EC2 Access Profile which utilizes the above machine role
+  EC2AccessProfile: 
+    Type: "AWS::IAM::InstanceProfile"
+    Properties: 
+      Path: "/"
+      Roles: 
+        - 
+          Ref: "MachineRole"
+
+  KubeNodeOne:
+    Type: AWS::EC2::Instance
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT30M
+    DependsOn: KubeMaster       
+    Properties:
+      ImageId: !Ref ImageID
+      KeyName: !Ref KeyPair 
+      InstanceType: !Ref InstanceSize
+      IamInstanceProfile: !Ref EC2AccessProfile
+      SecurityGroupIds:
+        - !Ref DevopsFireWall
+        - !Ref FireWallInternal
+      UserData: 
+        Fn::Base64: 
+          Fn::Sub: |
+            #!/bin/bash
+            wget -q https://www.jijutm.com/downloads/kube-bootstrap.sh -O /tmp/install.sh
+            . /tmp/install.sh
+            aws s3 cp s3://${S3Bucket}/kube-join.sh /tmp/kube-join.sh
+            . /tmp/kube-join.sh
+            /usr/local/bin/cfn-signal --exit-code 0 --resource KubeNodeOne --region ${AWS::Region} --stack ${AWS::StackName}
+
+  KubeNodeTwo:
+    Type: AWS::EC2::Instance
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT30M    
+    DependsOn: KubeMaster       
+    Properties:
+      ImageId: !Ref ImageID
+      KeyName: !Ref KeyPair 
+      InstanceType: !Ref InstanceSize
+      IamInstanceProfile: !Ref EC2AccessProfile
+      SecurityGroupIds:
+        - !Ref DevopsFireWall
+        - !Ref FireWallInternal
+      UserData: 
+        Fn::Base64: 
+          Fn::Sub: |
+            #!/bin/bash
+            wget -q https://www.jijutm.com/downloads/kube-bootstrap.sh -O /tmp/install.sh
+            . /tmp/install.sh
+            aws s3 cp s3://${S3Bucket}/kube-join.sh /tmp/kube-join.sh
+            . /tmp/kube-join.sh
+            /usr/local/bin/cfn-signal --exit-code 0 --resource KubeNodeTwo --region ${AWS::Region} --stack ${AWS::StackName}
+
+  KubeMaster:
+    Type: AWS::EC2::Instance
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT30M    
+    DependsOn: S3Bucket    
+    Properties:
+      ImageId: !Ref ImageID
+      KeyName: !Ref KeyPair 
+      InstanceType: !Ref InstanceSize
+      IamInstanceProfile: !Ref EC2AccessProfile
+      SecurityGroupIds:
+        - !Ref DevopsFireWall
+        - !Ref FireWallInternal
+      UserData: 
+        Fn::Base64: 
+          Fn::Sub: |
+            #!/bin/bash
+            export S3BUCKET=${S3Bucket}
+            wget -q https://www.jijutm.com/downloads/kube-bootstrap.sh -O /tmp/install.sh
+            . /tmp/install.sh
+            wget -q https://www.jijutm.com/downloads/kube-init-cluster.sh -O /tmp/init.sh
+            . /tmp/init.sh
+            aws s3 cp /tmp/join.sh s3://${S3Bucket}/kube-join.sh
+            /usr/local/bin/cfn-signal --exit-code 0 --resource KubeMaster --region ${AWS::Region} --stack ${AWS::StackName}
+
+  # EIP (Static IP) for only master machine
+  KubeMasterEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref KubeMaster     
+
+
+Outputs:
+  MasterPublicDNS:
+    Description: "KubeMaster Public DNS Name"
+    Value: !GetAtt KubeMaster.PublicDnsName
+  NodeOnePublicDNS:
+    Description: "KubeNodeOne Public DNS Name"
+    Value: !GetAtt KubeNodeOne.PublicDnsName
+  NodeTwoPublicDNS:
+    Description: "KubeNodeTwo Public DNS"
+    Value: !GetAtt KubeNodeTwo.PublicDnsName

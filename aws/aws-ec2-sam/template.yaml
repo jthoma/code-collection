@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SAM Template for Deploying EC2 with root disk of 100 GB
+
+Parameters:
+  # This is a security group which permits all ports from my ip only
+  DevopsFireWall:
+    Description: The DevOps Firewall Security Group ID
+    Type: AWS::EC2::SecurityGroup::Id 
+  # AMI id - this is ubuntu 18.04 on ap-south-1  
+  ImageID:
+    Description: AMI id preferred to use ubuntu 18.04
+    Type: AWS::EC2::Image::Id
+  # Intstance type ( defines memory and processor )  
+  InstanceSize:
+    Description: Instance Size
+    Type: String
+    Default: t2.small
+  # SSH key pair, will need to ssh into sometimes  
+  KeyPair:
+    Description: Key Pair Name - Should be existing key pair
+    Type: String
+
+Resources: 
+
+  ApplicationEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref ImageID
+      KeyName: !Ref KeyPair 
+      InstanceType: !Ref InstanceSize
+      SecurityGroupIds:
+        - !Ref DevopsFireWall
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 100
+
+Outputs:
+  EC2Instance:
+    Description: "DNS"
+    Value: !GetAtt ApplicationEC2.PublicDnsName
