@@ -4,7 +4,9 @@ For various purposes like checking library or bundled software versions, and oth
 
 Very short and down to earth.. no AccessProfile or other things are thought of, just an ec2 instance.
 
-[code]sam deploy -g[/code]
+```
+sam deploy -g
+```
 
 Will ask for the parameters and deploy into the account. Credentials should be configured beforehand and exported into environment.  
 

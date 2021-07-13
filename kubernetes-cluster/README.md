@@ -4,4 +4,6 @@ This is just an academic project as part of DevOps Masters Program with [Simplil
 
 Nothing much fancy here, just three nodes with ubuntu/focal64 (20.04) and post launch shell scripts to install everything.
 
+![vargant up --provision output](./vagrant-virtualbox.png)
+
 [AWS/EC2 Kubernetes Cluster](../aws/aws-cf-kubecluster) Similarly using AWS::EC2::Instance (s), bit more tough as here we know the IP adresses and we have a common directory path mapped into the systems, whereas there these had to be worked out.
