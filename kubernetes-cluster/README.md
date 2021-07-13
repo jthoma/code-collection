@@ -6,4 +6,6 @@ Nothing much fancy here, just three nodes with ubuntu/focal64 (20.04) and post l
 
 ![vargant up --provision output](./vagrant-virtualbox.png)
 
+From the above screenshot, lots of verbose messages from apt and other configuration are removed when stitching together, to limit the image size.
+
 [AWS/EC2 Kubernetes Cluster](../aws/aws-cf-kubecluster) Similarly using AWS::EC2::Instance (s), bit more tough as here we know the IP adresses and we have a common directory path mapped into the systems, whereas there these had to be worked out.
