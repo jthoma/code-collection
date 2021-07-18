@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  SAM Template for Deploying EC2, Machine Role, EC2 m5.large, EIP
+  SAM Template for Deploying 3xEC2 Kubernetes Cluster
 
 Parameters:
   # This is a security group which permits all ports from my ip only
@@ -29,39 +29,93 @@ Parameters:
 
 Resources: 
 
-  S3Bucket:
-    Type: AWS::S3::Bucket
+  # delete ssm parameter from store when stack is deleted
+  DeleteParameterOnStackDelete:
+    Type: Custom::DeleteSSMParameter
     Properties:
-      AccessControl: BucketOwnerFullControl
+      ServiceToken: !GetAtt DeleteParameterFunction.Arn
+      ParameterName: !Sub "${AWS::StackName}-join-cmd"
+      InstanceId: !Ref KubeMaster
 
-  # S3 VPC Endpoint
-  S3Endpoint:
-    Type: AWS::EC2::VPCEndpoint
+  # Note: This absolutely requires the inline code with ZipFile 
+  # to get the cfn-response module included 
+  DeleteParameterFunction:
+    Type: AWS::Lambda::Function 
     Properties:
-      ServiceName: !Sub 'com.amazonaws.${AWS::Region}.s3'
-      VpcId: !Ref TheVPC
+      Handler: index.handler
+      Role: !GetAtt DeleteParameterExecutionRole.Arn
+      Runtime: nodejs12.x
+      Timeout: 30
+      Code:
+        ZipFile: |      
+          const AWS = require('aws-sdk');
+          var response = require('cfn-response');
+          const ssm = new AWS.SSM({apiVersion: '2014-11-06'});
 
-  # Policy on the bucket permitting the VPC Endpoint
-  BucketPolicy:
-    Type: 'AWS::S3::BucketPolicy'
+          exports.handler = function(event, context) {
+              console.log("request received:\n" + JSON.stringify(event));
+
+              var physicalId = event.PhysicalResourceId;
+
+              function success(data) {
+                  data = data || {}
+                  console.log('SUCCESS:\n', data);
+                  return response.send(event, context, response.SUCCESS, data, physicalId);
+              }
+
+              function failed(err) {
+                  console.log('FAILED:\n', err);
+                  return response.send(event, context, response.FAILED, err, physicalId);
+              }
+
+              // ignore non-delete requests
+              if (event.RequestType !== 'Delete') {
+                  console.log('Non-delete request is ignored');
+                  return success();
+              }
+
+              // this is the extra property on the cf custom resource
+              var parameterName = event.ResourceProperties.ParameterName;
+              if (!parameterName) {
+                  return failed('parameterName required');
+              }
+
+              var params = {
+                  Name: parameterName
+                };
+              ssm.deleteParameter(params)
+              .promise()
+              .then((data) => {
+                  console.log('"DeleteParameters" Response:\n', JSON.stringify(data));
+                  success();
+              })
+              .catch((err) => failed(err));
+          };
+
+  DeleteParameterExecutionRole:
+    Type: AWS::IAM::Role
     Properties:
-      Bucket: !Ref S3Bucket
-      PolicyDocument:
-        Version: "2012-10-17"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
         Statement:
-          - Action:
-              - 's3:PutObject'
-              - 's3:GetObject'
-            Effect: Allow
-            Resource: !Join
-              - ''
-              - - 'arn:aws:s3:::'
-                - !Ref S3Bucket
-                - /*
-            Principal: '*'
-            Condition:
-              StringEquals:
-                'aws:sourceVpce': !Ref S3Endpoint
+        - Effect: Allow
+          Principal:
+            Service:
+              - lambda.amazonaws.com
+          Action:
+            - 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: ParameterDeletePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "ssm:DeleteParameter"
+                Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${AWS::StackName}-join-cmd"    
 
   # create an internal firewall - security group
   FireWallInternal:
@@ -111,14 +165,10 @@ Resources:
                   - "cloudformation:DescribeStackResource"
                 Resource: !Sub "${AWS::StackId}"
               - Effect: Allow
-                Action: 
-                  - 's3:PutObject'
-                  - 's3:GetObject'
-                Resource: !Join
-                  - ''
-                  - - 'arn:aws:s3:::'
-                    - !Ref S3Bucket
-                    - /*
+                Action:
+                  - "ssm:PutParameter"
+                  - "ssm:GetParameter"
+                Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${AWS::StackName}-join-cmd"    
 
   # the EC2 Access Profile which utilizes the above machine role
   EC2AccessProfile: 
@@ -149,7 +199,7 @@ Resources:
             #!/bin/bash
             wget -q https://www.jijutm.com/downloads/kube-bootstrap.sh -O /tmp/install.sh
             . /tmp/install.sh
-            aws s3 cp s3://${S3Bucket}/kube-join.sh /tmp/kube-join.sh
+            aws ssm get-parameter --region ${AWS::Region} --name ${AWS::StackName}-join-cmd | grep Value | awk -F'"' '{print $4}' | base64 -d > /tmp/kube-join.sh
             . /tmp/kube-join.sh
             /usr/local/bin/cfn-signal --exit-code 0 --resource KubeNodeOne --region ${AWS::Region} --stack ${AWS::StackName}
 
@@ -173,7 +223,7 @@ Resources:
             #!/bin/bash
             wget -q https://www.jijutm.com/downloads/kube-bootstrap.sh -O /tmp/install.sh
             . /tmp/install.sh
-            aws s3 cp s3://${S3Bucket}/kube-join.sh /tmp/kube-join.sh
+            aws ssm get-parameter --region ${AWS::Region} --name ${AWS::StackName}-join-cmd | grep Value | awk -F'"' '{print $4}' | base64 -d > /tmp/kube-join.sh
             . /tmp/kube-join.sh
             /usr/local/bin/cfn-signal --exit-code 0 --resource KubeNodeTwo --region ${AWS::Region} --stack ${AWS::StackName}
 
@@ -182,7 +232,6 @@ Resources:
     CreationPolicy:
       ResourceSignal:
         Timeout: PT30M    
-    DependsOn: S3Bucket    
     Properties:
       ImageId: !Ref ImageID
       KeyName: !Ref KeyPair 
@@ -195,12 +244,11 @@ Resources:
         Fn::Base64: 
           Fn::Sub: |
             #!/bin/bash
-            export S3BUCKET=${S3Bucket}
             wget -q https://www.jijutm.com/downloads/kube-bootstrap.sh -O /tmp/install.sh
             . /tmp/install.sh
             wget -q https://www.jijutm.com/downloads/kube-init-cluster.sh -O /tmp/init.sh
             . /tmp/init.sh
-            aws s3 cp /tmp/join.sh s3://${S3Bucket}/kube-join.sh
+            aws ssm put-parameter --region ${AWS::Region} --name ${AWS::StackName}-join-cmd --type String --value "`cat /tmp/join.sh | base64 -w 0`"
             /usr/local/bin/cfn-signal --exit-code 0 --resource KubeMaster --region ${AWS::Region} --stack ${AWS::StackName}
 
   # EIP (Static IP) for only master machine
