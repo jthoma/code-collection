@@ -1,0 +1,18 @@
+{  
+  "LambdaFunctionConfigurations": [
+   {
+     "LambdaFunctionArn": "<function arn ouput from cloud formation>",
+     "Events": ["s3:ObjectCreated:*"],
+     "Filter": {
+       "Key": {
+         "FilterRules": [
+           {
+             "Name": "prefix",
+             "Value": "images/"
+           }
+         ]
+       }
+     }
+   }
+  ]
+}

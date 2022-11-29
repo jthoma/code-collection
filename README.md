@@ -7,6 +7,7 @@
 * [AWS/Echo MY IP](./aws/echo-my-ip)
 * [AWS/AWS::EC2::Instance](./aws/aws-ec2-sam)
 * [AWS/EC2 Kubernetes Cluster](./aws/aws-cf-kubecluster)
+* [AWS/s3-trigger](./aws/s3-trigger/)
 * [Kubernetes Cluster with Vagrant and VirtualBox](./kubernetes-cluster)
 * [AWS/VPC::EIP::Lambda](./aws/vpc-eip-lambda)
 * [AWS/Wordpress and Nginx Config](./aws/lemp-wp-config)

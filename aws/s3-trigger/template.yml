@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  trigger lambda on s3 event
+  Just to demonstrate the capability 
+  
+Globals:
+  Function:
+    Timeout: 3
+
+Parameters:
+  S3Bucket:
+    Type: String
+
+Resources:
+  triggerFn:
+    Type: AWS::Serverless::Function 
+    Properties:
+      FunctionName: dummy-trigger
+      CodeUri: lambda/
+      Handler: index.handler
+      Runtime: nodejs16.x
+  InvokePermission:
+    Type: AWS::Lambda::Permission
+    DependsOn: triggerFn
+    Properties:
+      FunctionName: !Ref triggerFn
+      Action: lambda:InvokeFunction
+      Principal: s3.amazonaws.com
+      SourceArn:
+        Fn::Sub: arn:aws:s3:::${S3Bucket}
+
+Outputs:
+  FunctionArn:
+    Description: "Just the function ARN"
+    Value: !GetAtt triggerFn.Arn
