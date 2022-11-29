@@ -16,7 +16,6 @@ Resources:
   triggerFn:
     Type: AWS::Serverless::Function 
     Properties:
-      FunctionName: dummy-trigger
       CodeUri: lambda/
       Handler: index.handler
       Runtime: nodejs16.x

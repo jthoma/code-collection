@@ -6,6 +6,8 @@ This was attempted from a cloudformation but finally found that it could not be 
 with a simple process and needed a custom resource to finally attach lambda to the s3bucket 
 using notification configuration. 
 
+this is first deployed using sam deploy -g from the folder and the output is the function arn. Since in template the AWS::Serverless::Function, the optional property FunctionName is omitted, the name would be curated by cloudformation and unique for each stack.
+
 ## DevOps mindset tackled it differently
 
 My thought was to finalize with a simple aws-cli command and that now need a manual edit of the
