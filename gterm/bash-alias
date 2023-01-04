@@ -1,0 +1,1 @@
+alias gterm='/usr/bin/php -q gTerm.php'

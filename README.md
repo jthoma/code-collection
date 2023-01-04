@@ -12,6 +12,7 @@
 * [AWS/VPC::EIP::Lambda](./aws/vpc-eip-lambda)
 * [AWS/Wordpress and Nginx Config](./aws/lemp-wp-config)
 * [UBUNTU](./ubuntu/)
+* [gTerm](./gterm/)
 
 ## AWS/Cloud Watch UAPI xml logger
 
@@ -73,3 +74,7 @@ Nothing much, an SNS Payload with solid subject and string message is expected w
 ## Postman to NodeJS Code Generator
 
 Generate code abstraction by reading the postman export. Any rest api can be abstracted to node.js code module using this code writer.
+
+## gTerm
+
+gterm - a console app in php to learn and test Travelport Galileo GDS Terminal Commands [demo on YouTube](https://youtu.be/30wohPsWBa4)
