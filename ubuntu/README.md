@@ -29,3 +29,7 @@ Actually this is an alias command, once the .bash_aliases is updated with those 
 ## sshns and scpns
 
 Nothing much other than to show that these aliases are already applied with ssh non secure switches, which help us to ignore the signature keys prompt. When there are hundreds of EC2 instances and while doing ssh into multiple ones, the known_hosts can grow to a very large size slowing down the ssh handshake.
+
+## split.sh
+
+Video file splitter, depends on *bc* and *ffmpeg*, on line:4 the wlimit is the configuration for size limit, and depending on resolution and other conditions, time to size relations may have some shift, also the final segment might be slightly more than expected. my requirement being ability to split my own video files and send it to some family members over whatsapp for suggestions before hosting on youtube publicly. it more or less serves the purpose. though some variations in the precision is seen. for instance last time a 37MB file was split, 4 pieced were created with 8.9, 8.2, 9.4 and 11 mb. Some mismatch could be due to the bc ignoring any decimal place.    
