@@ -1,0 +1,13 @@
+{
+  "name": "api-codegen",
+  "version": "1.0.0",
+  "description": "Attempt to generate api server from custom api json wireframe document",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": " echo 'run with node' "
+  },
+  "keywords": [],
+  "author": "@jijutm http://bz2.in/u8u4pi",
+  "license": "ISC"
+}

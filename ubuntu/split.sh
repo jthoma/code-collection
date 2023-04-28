@@ -25,13 +25,10 @@ lens=$(echo "$dur"| awk -F: '{print $3}')
 
 tlen=$( echo "( $lenh * 60 * 60 ) + ( $lenm * 60 ) + $lens " | bc )
 
-echo " $tlen/$cx "
-exit 0;
 
 tmx=$( echo " $tlen/$cx " | bc)
 echo "$file has total duration $dur and can split into $cx parts each of duration $( date -d@$tmx -u +%H:%M:%S )"
 
-echo "";
 
 > /dev/shm/run.txt 
 

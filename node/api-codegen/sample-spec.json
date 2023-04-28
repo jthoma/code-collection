@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "route": "/entity/",
+      "methods": [
+        "get",
+        "post"
+      ]
+    },
+    {
+      "route": "/entity/:id:/",
+      "methods": [
+        "get",
+        "put",
+        "patch",
+        "delete"
+      ]
+    },
+    {
+      "route": "/votes/",
+      "methods": [
+        "get",
+        "post"
+      ]
+    },
+    {
+      "route": "/votes/:id:/",
+      "methods": [
+        "get",
+        "patch",
+        "delete"
+      ]
+    }
+  ]
+}

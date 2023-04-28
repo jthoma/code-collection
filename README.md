@@ -4,6 +4,7 @@
 * [Node/API Key Generator](./node/api-key.js)
 * [AWS/SNS to CloudWatch log](./aws/sns-cw-log.js)
 * [Node/Postman to code builder](./node/generator.js)
+* [API-first wireframe to typescript stub](./node/api-codegen/)
 * [AWS/Echo MY IP](./aws/echo-my-ip)
 * [AWS/AWS::EC2::Instance](./aws/aws-ec2-sam)
 * [AWS/EC2 Kubernetes Cluster](./aws/aws-cf-kubecluster)
@@ -78,3 +79,10 @@ Generate code abstraction by reading the postman export. Any rest api can be abs
 ## gTerm
 
 gterm - a console app in php to learn and test Travelport Galileo GDS Terminal Commands [demo on YouTube](https://youtu.be/30wohPsWBa4)
+
+##typescript express api stub generator
+
+Not sure if I have been trying to re-invent the wheel. But a specific structure wireframe for any api if supplied as commandline would 
+build a basic starter with routers and controllers along with the required module references in package.json. that means an MVP starter for any api 
+can be built under 5 minutes, and expanding with business logic is the customizations which can be done within the functional methods. Generated 
+code has enough comments to explain what to do where. This heavily depends on the templates and requires nodejs v16.20.0 as of now. 
