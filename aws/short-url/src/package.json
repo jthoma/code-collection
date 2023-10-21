@@ -1,0 +1,91 @@
+{
+    "_args": [
+      [
+        {
+          "raw": "uuid5",
+          "scope": null,
+          "escapedName": "uuid5",
+          "name": "uuid5",
+          "rawSpec": "",
+          "spec": "latest",
+          "type": "tag"
+        },
+        "/home/jijutm/Projects/saturn/node/url-shortener-s4n"
+      ]
+    ],
+    "_from": "uuid5@latest",
+    "_id": "uuid5@1.0.2",
+    "_inCache": true,
+    "_location": "/uuid5",
+    "_nodeVersion": "6.8.0",
+    "_npmOperationalInternal": {
+      "host": "packages-12-west.internal.npmjs.com",
+      "tmp": "tmp/uuid5-1.0.2.tgz_1477359487859_0.8517707658465952"
+    },
+    "_npmUser": {
+      "name": "velocityzen",
+      "email": "velocityzen@gmail.com"
+    },
+    "_npmVersion": "3.10.8",
+    "_phantomChildren": {},
+    "_requested": {
+      "raw": "uuid5",
+      "scope": null,
+      "escapedName": "uuid5",
+      "name": "uuid5",
+      "rawSpec": "",
+      "spec": "latest",
+      "type": "tag"
+    },
+    "_requiredBy": [
+      "#USER",
+      "/"
+    ],
+    "_resolved": "https://registry.npmjs.org/uuid5/-/uuid5-1.0.2.tgz",
+    "_shasum": "ae38241473b7f3d219d411931d4dd9b0b8741b48",
+    "_shrinkwrap": null,
+    "_spec": "uuid5",
+    "_where": "/home/jijutm/Projects/saturn/node/url-shortener-s4n",
+    "author": {
+      "name": "Alexey Novikov",
+      "email": "v@2dubs.com"
+    },
+    "bugs": {
+      "url": "https://github.com/velocityzen/uuid5/issues"
+    },
+    "dependencies": {},
+    "description": "UUID v5 generator (SHA1 hash into 128 bits)",
+    "devDependencies": {},
+    "directories": {},
+    "dist": {
+      "shasum": "ae38241473b7f3d219d411931d4dd9b0b8741b48",
+      "tarball": "https://registry.npmjs.org/uuid5/-/uuid5-1.0.2.tgz"
+    },
+    "gitHead": "1beff7552df2e8a287af0441f3e46cd58802df66",
+    "homepage": "https://github.com/velocityzen/uuid5#readme",
+    "keywords": [
+      "hash",
+      "sha1",
+      "uuid"
+    ],
+    "license": "MIT",
+    "main": "index.js",
+    "maintainers": [
+      {
+        "name": "velocityzen",
+        "email": "velocityzen@gmail.com"
+      }
+    ],
+    "name": "uuid5",
+    "optionalDependencies": {},
+    "readme": "ERROR: No README data found!",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/velocityzen/uuid5.git"
+    },
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "version": "1.0.2"
+  }
+  
