@@ -33,3 +33,7 @@ Nothing much other than to show that these aliases are already applied with ssh 
 ## split.sh
 
 Video file splitter, depends on *bc* and *ffmpeg*, on line:4 the wlimit is the configuration for size limit, and depending on resolution and other conditions, time to size relations may have some shift, also the final segment might be slightly more than expected. my requirement being ability to split my own video files and send it to some family members over whatsapp for suggestions before hosting on youtube publicly. it more or less serves the purpose. though some variations in the precision is seen. for instance last time a 37MB file was split, 4 pieced were created with 8.9, 8.2, 9.4 and 11 mb. Some mismatch could be due to the bc ignoring any decimal place.    
+
+## generator.php
+
+This generates sequential filenames and range of brightness-contrast options to be supplied to image magic tool convert to generate 900 different images from a single image with varying brightness giving an effect of dawn with 30 min in 30 seconds targeting facebook reels the dimension of src.png should be 500x888 and generate the output using ffmpeg. commands will be updated later.
