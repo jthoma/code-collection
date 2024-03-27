@@ -23,3 +23,6 @@ This is a starter, and once everything is buillt, make modifications to the shel
 ## Upcoming
 
 Soon as I find time and solace the whole actions would be wrapped into an aws sam template and that will be updated in a shoutout. 
+
+## HTML Client [html client frontend](./html-client) 
+Recently attempted (March 2024) to create an HTML Frontend with the help of Google Gemini. 
