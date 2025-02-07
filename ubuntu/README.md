@@ -37,3 +37,8 @@ Video file splitter, depends on *bc* and *ffmpeg*, on line:4 the wlimit is the c
 ## generator.php
 
 This generates sequential filenames and range of brightness-contrast options to be supplied to image magic tool convert to generate 900 different images from a single image with varying brightness giving an effect of dawn with 30 min in 30 seconds targeting facebook reels the dimension of src.png should be 500x888 and generate the output using ffmpeg. commands will be updated later.
+
+
+## webserver.sh
+
+Depends on ubuntu server and when run will configure a webserver with all required packages.
