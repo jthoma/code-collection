@@ -43,5 +43,5 @@ foreach($pg as $exp){
 /*
   
 php -q generator.php > newlist.txt
-cat newlist.txt | while read fname val ; do echo $fname; convert src.png -brightness-contrast ${val}x0 anim/$fname; done
+cat newlist.txt | while read fname val ; do echo $fname; if [! -f anim/$fname ]; then ; convert src.png -brightness-contrast ${val}x0 anim/$fname; fi; done
 */

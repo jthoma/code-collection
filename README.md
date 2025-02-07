@@ -14,6 +14,7 @@
 * [AWS/Wordpress and Nginx Config](./aws/lemp-wp-config)
 * [UBUNTU](./ubuntu/)
 * [gTerm](./gterm/)
+* [AWS/Migrate DynamoDB](./aws/migrate-dynamodb/)
 
 ## AWS/Cloud Watch UAPI xml logger
 
@@ -79,3 +80,7 @@ Generate code abstraction by reading the postman export. Any rest api can be abs
 ## gTerm
 
 gterm - a console app in php to learn and test Travelport Galileo GDS Terminal Commands [demo on YouTube](https://youtu.be/30wohPsWBa4)
+
+## AWS/Migrate DynamoDB
+
+Few scripts which when used *responsibily* will help one to copy any number of dynamodb tables from one region to another. 
