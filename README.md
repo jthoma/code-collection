@@ -15,7 +15,7 @@
 * [UBUNTU](./ubuntu/)
 * [gTerm](./gterm/)
 * [AWS/Migrate DynamoDB](./aws/migrate-dynamodb/)
-* [AWS EC2 Inactive Shutdown](./aws/ec2-inactivity-shutdown/
+* [AWS EC2 Inactive Shutdown](./aws/ec2-inactivity-shutdown/)
 
 ## AWS/Cloud Watch UAPI xml logger
 
