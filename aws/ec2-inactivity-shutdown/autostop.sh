@@ -31,7 +31,7 @@ fi
 AUTH_TS=$(date -d "$AUTHDT" +%s)
 DISC_TS=$(date -d "$DISCDT" +%s)
 
-TSDIFF=$((DISC_TS - AUTH_TS))
+TSDIFF=$(($DISC_TS - $AUTH_TS))
 
 if [ $TSDIFF -gt $TIMEOUT ]; then
     echo "$TIMESTAMP: Inactivity timeout reached, shutting down" >> "$LOG_FILE"
