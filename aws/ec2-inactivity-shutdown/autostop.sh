@@ -13,13 +13,7 @@ if [ $USERS -gt 0 ] ; then
     exit 0
 fi
 
-AUTHDT=$(grep "Accepted publickey for $CHECKFOR" /var/log/auth.log | tail -1 | awk '{print $1}')
 AUTHIP=$(grep "Accepted publickey for $CHECKFOR" /var/log/auth.log | tail -1 | awk '{print $9}')
-
-if [ -z "$AUTHDT" ]; then
-    echo "$TIMESTAMP: Login not found, exiting" >> "$LOG_FILE"
-    exit 0
-fi
 
 DISCDT=$(grep "Received disconnect from $AUTHIP" /var/log/auth.log | tail -1 | awk '{print $1}')
 
@@ -28,10 +22,13 @@ if [ -z "$DISCDT" ]; then
     exit 0
 fi
 
-AUTH_TS=$(date -d "$AUTHDT" +%s)
 DISC_TS=$(date -d "$DISCDT" +%s)
+CURR_TS=$(date +%s)
 
-TSDIFF=$(($DISC_TS - $AUTH_TS))
+    echo "$TIMESTAMP: Current timestamp: $CURR_TS Disconnected Timestamp: $DISC_TS " >> "$LOG_FILE"
+
+
+TSDIFF=$(($CURR_TS - $DISC_TS))
 
 if [ $TSDIFF -gt $TIMEOUT ]; then
     echo "$TIMESTAMP: Inactivity timeout reached, shutting down" >> "$LOG_FILE"
