@@ -9,6 +9,7 @@
 * [AWS/EC2 Kubernetes Cluster](./aws/aws-cf-kubecluster)
 * [AWS/s3-trigger](./aws/s3-trigger/)
 * [AWS/Short URL](./aws/short-url/README.md)
+* [AWS Cloud Watch Log backup to s3 in chronological files](./aws/cw-to-s3/)
 * [Kubernetes Cluster with Vagrant and VirtualBox](./kubernetes-cluster)
 * [AWS/VPC::EIP::Lambda](./aws/vpc-eip-lambda)
 * [AWS/Wordpress and Nginx Config](./aws/lemp-wp-config)

@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  LogProcessorLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: LogProcessorLambda
+      Runtime: nodejs18.x
+      CodeUri: src/
+      Handler: index.handler
+      Timeout: 120
+      MemorySize: 256
+      Environment:
+        Variables:
+          LOG_GROUP_NAME: "/aws/lambda/my-log-group"
+          S3_BUCKET_NAME: "my-log-bucket"
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - logs:FilterLogEvents
+                - logs:DescribeLogStreams
+                - logs:DeleteLogStream
+              Resource: 
+                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:${LOG_GROUP_NAME}:*"
+            - Effect: Allow
+              Action: 
+                - s3:PutObject
+              Resource: 
+                - !Sub "arn:aws:s3:::${S3_BUCKET_NAME}/*"
+      Events:
+        ScheduledEvent:
+          Type: Schedule
+          Properties:
+            Schedule: "cron(1 0 * * ? *)"  # Runs at 00:01 UTC daily
+            Enabled: true
+
+Outputs:
+  LambdaFunctionArn:
+    Description: "Lambda function ARN"
+    Value: !GetAtt LogProcessorLambda.Arn
