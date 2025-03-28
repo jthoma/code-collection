@@ -1,0 +1,109 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM template for ElastiCache and Lambda in a new VPC
+
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+
+  MySubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+
+  MySubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+
+  MyCacheSubnetGroup:
+    Type: AWS::ElastiCache::SubnetGroup
+    Properties:
+      Description: Subnet group for ElastiCache
+      SubnetIds:
+        - !Ref MySubnet1
+        - !Ref MySubnet2
+
+  MyCacheSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for ElastiCache (Lambda access only)
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 11211
+          ToPort: 11211
+          SourceSecurityGroupId: !Ref LambdaSecurityGroup
+
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for Lambda functions
+      VpcId: !Ref MyVPC
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 11211
+          ToPort: 11211
+          DestinationSecurityGroupId: !Ref MyCacheSecurityGroup
+
+  MyCacheCluster:
+    Type: AWS::ElastiCache::CacheCluster
+    Properties:
+      CacheNodeType: cache.t2.medium
+      Engine: memcached
+      NumCacheNodes: 1
+      CacheSubnetGroupName: !Ref MyCacheSubnetGroup
+      VpcSecurityGroupIds:
+        - !GetAtt MyCacheSecurityGroup.GroupId
+      Port: 11211
+
+  APIHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: index.handler
+      Runtime: nodejs22.x
+      Events:
+       RootApiEvent:
+         Type: Api
+         Properties:
+          Path: "/"
+          Method: any
+       ProxyApiEvent:
+         Type: Api
+         Properties:
+           Path: "{proxy+}"
+           Method: any
+      Environment:
+        Variables:
+          ELASTICACHE_ENDPOINT: !GetAtt MyCacheCluster.ConfigurationEndpoint.Address
+          ELASTICACHE_PORT: !GetAtt MyCacheCluster.ConfigurationEndpoint.Port
+      VpcConfig:
+        SecurityGroupIds:
+          - !GetAtt LambdaSecurityGroup.GroupId
+        SubnetIds:
+          - !Ref MySubnet1
+          - !Ref MySubnet2
+
+  ApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId: !Ref ServerlessRestApi
+      StageName: dev
+      Description: "Deployment for dev stage"
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev/*"
+  CacheClusterEndpoint:
+    Description: Endpoint of the ElastiCache Memcached cluster
+    Value: !GetAtt MyCacheCluster.ConfigurationEndpoint.Address
