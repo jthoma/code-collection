@@ -3,8 +3,8 @@ const crypto = require('crypto');
 const memcached = new Memcached(process.env.ELASTICACHE_ENDPOINT);
 const SessionTtl = 1440; // 24 minutes
 
-async function sessionStart(event) {
-   let sessionId = getSessionIdFromCookie(event.headers.Cookie);
+function sessionStart(event) {
+   let sessionId = getSessionIdFromCookie(event);
 
     if (!sessionId) {
         sessionId = generateSessionId();
@@ -46,10 +46,17 @@ async function sessionGetValue(sessionId, key) {
 }
 
 function generateSessionId() {
-    return crypto.randomBytes(32).toString('hex');
+    return crypto.randomBytes(32).toString('hex').toUpperCase();
 }
 
-function getSessionIdFromCookie(cookieHeader) {
+function getSessionIdFromCookie(event) {
+    if(event.hasOwnProperty("headers") == false){
+      return null;
+    }
+    if(event.header.hasOwnProperty("Cookie") == false){
+      return null;
+    }
+    let cookieHeader = event.headers.Cookie;
     if (!cookieHeader) {
         return null;
     }

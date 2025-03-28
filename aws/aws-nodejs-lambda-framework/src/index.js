@@ -1,4 +1,5 @@
 const path = require('path');
+const db = require('lib/db.js'); 
 const sessions = require('lib/sessions');
 
 function stripId(urlPath) {
@@ -38,7 +39,7 @@ exports.handler = async (event) => {
     }
 
 // may need additional params db,session,aws,cloudsearch
-    return await handlerModule.handler(event, sessions, db);
+    return await handlerModule.handler(event, db, sessions);
 
   } catch (error) {
     console.error('Error in main handler:', error);
