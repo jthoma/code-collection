@@ -102,3 +102,64 @@ The EC2 instance should be configured with an auto-shutdown script that terminat
 
 * *Just a  Note*
 I am working on Samsung Tab S7 FE with full keyboard book case cover and strict face recognition and is not so bothered about storing the credentials as plain text.  
+
+## Addressing dynamic public ip and AWS security group permissons
+
+**[aws-fw-update.sh](./aws-fw-update.sh)** 
+
+This is a useful script for dynamically updating security group ingress rules, especially in situations where your public IP address changes frequently (like when using mobile data). Here's a breakdown of the script and some considerations:
+
+**Script Explanation:**
+
+1.  **`currentip=$( get my public ip service like what is my ip or host your self with my code on git https://bz2.in/7ltohs)`:**
+    * This line retrieves your current public IP address. I am using own hosted service, for better control and reliability and the same code is also shared.
+    * Then it retrieves the details of the specified security group and saves them to `permissions.json`.
+    * Thrn  parses `permissions.json` to extract existing CIDR IP ranges (excluding `/0`, which represents all IPs).
+    * It then iterates through each existing CIDR and revokes the corresponding ingress rule.
+    * This is the section that removes all previous specific ip addresses.
+4.  **`aws ec2 authorize-security-group-ingress --group-id $AWS_SECURITY_GROUP --protocol "-1" --cidr "$currentip/32"`:**
+    * This command adds a new ingress rule to the security group, allowing all traffic (`-1`) from your current IP address (`$currentip/32`).
+
+**Pros:**
+* **Dynamic IP Handling:**
+    * It effectively solves the problem of changing public IP addresses.
+* **Security:**
+    * By revoking existing rules before adding the new one, it minimizes the window of vulnerability.
+    * By using /32 the allowed ip is only the current ip.
+* **Automation:**
+    * It automates a tedious and error-prone process.
+* **Control:**
+    * Using your own ip service gives full control.
+
+**Cons/Considerations:**
+
+* **Security Risks:**
+    * While the script improves security compared to allowing all IPs (`/0`), it still grants broad access from your current IP. Ensure you trust the devices using that IP.
+    * If your IP is compromised, the ec2 instance is also compromised.
+* **Dependencies:**
+    * It relies on the AWS CLI, `grep`, `awk`, and your custom IP service.
+* **Error Handling:**
+    * The script lacks error handling. Consider adding checks for AWS CLI errors and network connectivity.
+* **Permissions:**
+    * Ensure the AWS credentials have the necessary permissions to modify security group ingress rules.
+* **Cost:**
+    * If the hosted ip service is not in the free tier, it will incur cost.
+* **Potential for service disruption:**
+    * If the ip service is down, the script will also fail.
+
+**Improvements:**
+
+* **Error Handling:**
+    * Add `if` statements to check the exit codes of AWS CLI commands.
+    * Implement logging to track script execution and potential errors.
+* **Input Validation:**
+    * Validate the `$currentip` variable to ensure it's a valid IP address.
+* **Confirmation:**
+    * Add a confirmation prompt before revoking and authorizing security group rules.
+* **Specific Ports:**
+    * Instead of allowing all traffic (`-1`), consider specifying the necessary ports and protocols.
+
+**Overall:**
+
+This script is a valuable tool for managing security group ingress rules in dynamic IP environments. Remember to prioritize security and implement error handling for production use. ;) Assessment of Google Gemini
+ 
