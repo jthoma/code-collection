@@ -13,16 +13,23 @@ if [ $USERS -gt 0 ] ; then
     exit 0
 fi
 
-AUTHIP=$(grep "Accepted publickey for $CHECKFOR" /var/log/auth.log | tail -1 | awk '{print $9}')
+AUTH_LOG_LINE=$(grep "Accepted publickey for $CHECKFOR" /var/log/auth.log | tail -1)
 
-if [ -z "$AUTHIP" ]; then
-    echo "$TIMESTAMP: Login from IP not found, exiting" >> "$LOG_FILE"
+if [ -z "$AUTH_LOG_LINE" ]; then
+    echo "$TIMESTAMP: Login not found, exiting" >> "$LOG_FILE"
     exit 0
 fi
-AUTHDT=$(grep "Accepted publickey for $CHECKFOR" /var/log/auth.log | tail -1 | awk '{print $1}')
+
+AUTHDT=$(echo "$AUTH_LOG_LINE" | awk '{print $1}')
+AUTHIP=$(echo "$AUTH_LOG_LINE" | awk '{print $9}')
 
 if [ -z "$AUTHDT" ]; then
-    echo "$TIMESTAMP: Login from IP not found, exiting" >> "$LOG_FILE"
+    echo "$TIMESTAMP: Login not found, exiting" >> "$LOG_FILE"
+    exit 0
+fi
+
+if [ -z "$AUTHIP" ]; then
+    echo "$TIMESTAMP: Login IP not found, exiting" >> "$LOG_FILE"
     exit 0
 fi
 
@@ -33,23 +40,19 @@ if [ -z "$DISCDT" ]; then
     exit 0
 fi
 
+    echo "$TIMESTAMP: Got Data: $AUTHIP $AUTHDT $DISCDT; Continue" >> "$LOG_FILE"
 
 AUTH_TS=$(date -d "$AUTHDT" +%s)
 DISC_TS=$(date -d "$DISCDT" +%s)
 CURR_TS=$(date +%s)
 
-    echo "$TIMESTAMP: Current timestamp: $CURR_TS Disconnected Timestamp: $DISC_TS " >> "$LOG_FILE"
+echo "$TIMESTAMP: Logout at $DISC_TS and Current Time: $CURR_TS" >> "$LOG_FILE"
 
-if [$AUTH_TS -gt $DISC_TS ] ; then
-    echo "$TIMESTAMP: Disconnect at $DISCDT is before Authentication at $AUTHDT, exiting  " >> "$LOG_FILE"
-    exit 0
-fi
-
-TSDIFF=$(($CURR_TS - $DISC_TS))
+TSDIFF=$(( $CURR_TS - $DISC_TS ))
 
 if [ $TSDIFF -gt $TIMEOUT ]; then
-    echo "$TIMESTAMP: Inactivity timeout reached, shutting down" >> "$LOG_FILE"
+    echo "$TIMESTAMP: Inactivity timeout reached ( $TSDIFF / $TIMEOUT ), shutting down" >> "$LOG_FILE"
     /usr/sbin/shutdown -h now
 else
-    echo "$TIMESTAMP: Inactivity timeout not reached, exiting" >> "$LOG_FILE"
+    echo "$TIMESTAMP: Inactivity timeout not reached, exiting ( $TSDIFF / $TIMEOUT )" >> "$LOG_FILE"
 fi
