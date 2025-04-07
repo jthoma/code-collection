@@ -1,14 +1,14 @@
 {
-  "name": "express-lambda",
+  "name": "jtm-lambda",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["nodejs","aws","serverless","framework","autorouting"],
+  "author": "Jiju Thomas Mathew",
   "license": "ISC",
-  "description": "",
+  "description": "minimalistic serverless framework with sessions in memcached elasticache targeted for aws deployment using sam cli and template.yaml",
   "dependencies": {
     "memcached-elasticache": "^1.1.1"
   }

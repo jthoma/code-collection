@@ -1,31 +1,22 @@
 const path = require('path');
 const db = require('lib/db.js'); 
 const sessions = require('lib/sessions');
-
-function stripId(urlPath) {
-      return urlPath.replace(/\/(\d+)/g, '');
-  }
-
-
-
+const router = require('lib/router');
+const handlers = require('./lib/handlers');
 exports.handler = async (event) => {
   try {
-    const request = {
-      url: {
-        path: event.path, 
-      },
-      method: event.httpMethod,
-    };
-
-    const { url, method } = request;
-      var endpoint = url.path;
-         endpoint = stripId(endpoint);
-      const methodName = method.toLowerCase();
-      const endpointName = endpoint.replace(/[^a-zA-Z0-9]/g, '_');
-      const funcName = `${methodName}_${endpointName}`;
-      const fileName = `${funcName}.js`;
-
+    const url = event.path; 
+    const method = event.httpMethod;
+    const parsed = router.jparse(event);
+    const fileName = parsed.fileName;
   console.log({fileName, url, method});
+   if((!handlers.includes(fileName)){
+     console.log("Handler not exist: " +fileName);
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ error: 'Requested resource not found' }),
+      };
+   }
 
     let handlerModule;
     try {
@@ -34,12 +25,18 @@ exports.handler = async (event) => {
       console.error('Handler module not found:', fileName, error);
       return {
         statusCode: 404,
-        body: JSON.stringify({ error: 'Handler not found' }),
+        body: JSON.stringify({ error: 'Requested resource not found' }),
       };
     }
 
-// may need additional params db,session,aws,cloudsearch
-    return await handlerModule.handler(event, db, sessions);
+/*
+* may need additional params 
+* also check the DYNAMIC ROUTES array in 
+* lib/router and make sure to add  patterns of url
+* which you expect to contain url embedded variables 
+* which in case captured will be parsed.vars  
+*/
+    return await handlerModule.handler(event, db, sessions, parsed);
 
   } catch (error) {
     console.error('Error in main handler:', error);

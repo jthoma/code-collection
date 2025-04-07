@@ -9,7 +9,7 @@ return `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Form with Bootstrap</title>
+    <title>Hello welcome</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="d-flex align-items-center justify-content-center vh-100">
@@ -35,7 +35,7 @@ return `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Form with Bootstrap</title>
+    <title>Hello welcome to homepage</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="d-flex align-items-center justify-content-center vh-100">
@@ -66,7 +66,7 @@ function handler(event,db,ses) {
  let body = formhtml(message);
  if(myname){
     message = `Hello ${myname} , wish you a great day!`;
-    
+    body = greethtml(message);
  }
  let hdr = ses.hdr(sessionid);
     return {

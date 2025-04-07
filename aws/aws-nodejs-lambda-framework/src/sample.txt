@@ -1,0 +1,2 @@
+post cargo/tracking/{type}/{provider}
+get user/signup/{type}/{value}
