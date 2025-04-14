@@ -15,6 +15,7 @@
 * [AWS/Wordpress and Nginx Config](./aws/lemp-wp-config)
 * [UBUNTU](./ubuntu/)
 * [gTerm](./gterm/)
+* [HTML Text Editor](./textedit) Feature rich text editor in pure html and hosted on aws through [short url](https://bz2.in/texdit)
 * [AWS/Migrate DynamoDB](./aws/migrate-dynamodb/)
 * [AWS EC2 Inactive Shutdown](./aws/ec2-inactivity-shutdown/)
 * [AWS Lambda Framework for Node js](./aws/aws-nodejs-lambda-framework)
