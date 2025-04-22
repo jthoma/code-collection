@@ -26,7 +26,7 @@ function mkcmd( $exp, $plmin) {
     foreach ($iter as $j){
         $ftg = mkftg();
         $expos = $exp + ($j / 10);
-        echo "img" . $ftg . ".png " .$plmin."$expos"."\n";
+        echo "img" . $ftg . ".jpg " .$plmin."$expos"."\n";
     }
 
 }

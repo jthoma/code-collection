@@ -14,8 +14,9 @@ echo '];' >> ../lib/handlers.js
 
 const DYNAMIC_ROUTES = [
   { method: "post", pattern: "cargo/tracking/{type}/{provider}", handler: "cargo_tracking.js" },
-  { method: "get",  pattern: "user/signup/{type}/{value}" }
-];
+  { method: "post", pattern: "user/login/{username}/",handler:"post_user_login.js"},
+  { method: "get", pattern: "user/signup/{username}/",handler:"user_signup.js"},
+  { method: "get", pattern: "user/{username}/cart/list/",handler:"get_cart_list.js"}];
 
 const STATIC_ROUTES = [
   { method: "any", path: "/", handler: "homepage.js" }
@@ -75,7 +76,7 @@ function routeLookup(req) {
   return result;
 }
 
-async function jparse(event) {
+function jparse(event) {
   try {
     return routeLookup({
       path: event.path,

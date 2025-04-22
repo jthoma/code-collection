@@ -9,3 +9,8 @@ for i in *.js ; do  echo "'$i',"; done >> ../lib/handlers.js
 echo '];' >> ../lib/handlers.js
 `
 or familiarize the current structure of the said file `lib/handlers.js` and update it whenever you add a new handler. When adding a handler make sure to follow the request method and path format and or update the configurations for DYNAMIC_ROUTES and STATIC_ROUES in the lib/router.js. Also if any url embedded variables are to be captured, then the DYNAMIC_ROUTES with placeholders is required. Or try and parse the embedded variables in your handler code. The handler method is also passed with the original lambda triggered event.
+
+Version 1.02
+the lib/router.php is updated with more enhanced static and dynamic routes. Retain those needed, remove those not needed, add anything that is needed and not exists. Check the handlers in routes/* and implement the lib/handlers.js update code when you deploy. The included node module is elasticache for the sessions. Others should be added as and when needed. 
+The generator.js is renamed to localtest.js enabling testing of the functionality within a terminal environment listen on localhost:8080 and an aws lambda event object is created with minimal properties for downstream processing. 
+Once you make modifications to lib/router.js for your preferences, make sure to test those using the t.js modifying the testdata to have your method and path possiblities and then run it using node t.js 
