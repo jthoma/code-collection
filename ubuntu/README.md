@@ -3,7 +3,7 @@
 * [bash aliases](#bash_aliases)
 * [aws-env-init](#envinit)
 * [aws-permit-me](#permitme)
-
+* [stop-watch](./stop-watch/)
 <a name="bash_aliases"></a>
 ## bash aliases
 
