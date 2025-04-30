@@ -19,6 +19,7 @@
 * [AWS/Migrate DynamoDB](./aws/migrate-dynamodb/)
 * [AWS EC2 Inactive Shutdown](./aws/ec2-inactivity-shutdown/)
 * [AWS Lambda Framework for Node js](./aws/aws-nodejs-lambda-framework)
+* [Serverless URL Benchmark](./aws/serverless-web-bench/)
 ## AWS/Cloud Watch UAPI xml logger
 
 ### Introduction
