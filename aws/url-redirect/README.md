@@ -50,7 +50,7 @@ This shell script (`compress.sh`) automates the creation of short URLs using an 
 
 ```bash
 ./compress.sh <FULL_URL> [SHORT_ID]
-
+```
 
 ## Disclaimer 
 
