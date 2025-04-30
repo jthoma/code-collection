@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Web Bench Node.js Lambda function deployed using AWS SAM
+
+Resources:
+  BenchmarkFunction: # Changed to a more descriptive and consistent name
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs20.x
+      CodeUri: ./src
+      MemorySize: 128
+      Timeout: 30
+      Events:
+        BenchmarkAPI: # Changed to a more descriptive name
+          Type: Api
+          Properties:
+            Path: /test
+            Method: post
+Outputs:
+  WebAppURL:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/test"

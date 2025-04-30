@@ -1,0 +1,23 @@
+{
+  "name": "slsbench",
+  "version": "1.0.0",
+  "description": "Serverless url benchmarking attempt",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "serverless",
+    "webapplication",
+    "benchmark"
+  ],
+  "author": "jijutm@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.8"
+  },
+  "devDependencies": {}
+}
