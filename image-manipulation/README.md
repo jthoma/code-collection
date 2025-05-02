@@ -135,6 +135,7 @@ The resizing process involves a combination of shell commands and the `rzcmd.php
     * `dimensions=$(magick identify -format "%w %h" "$filename")`: Gets the width and height of the current image.
     * `resize_percent=$(php -q <path/to/rzcmd.php> $dimensions $TARGET_MP)`: Calls `rzcmd.php` to calculate the resize percentage. **Important:** Replace `<path/to/rzcmd.php>` with the actual path to the `rzcmd.php` script.
     * `magick "$filename" -resize "$resize_percent" "<path/to/resized_images>/$(basename "$filename")"`: Resizes the image using ImageMagick and saves it to the `resized_images` directory. `$(basename "$filename")` ensures the resized image keeps the original filename. **Important:** Replace `<path/to/resized_images>` with the actual path.
+    * Had some issues with few files, and could not identify the pattern so just added -strip before the filename in the above command to remove the exif information which was misleading gui tools and android galery
     * `echo "Resized..."`: Prints a message indicating that the image has been resized.
 
 ### 2. Validating Resized Images
