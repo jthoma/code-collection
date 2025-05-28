@@ -45,6 +45,10 @@ This folder contains scripts for efficient image manipulation, specifically desi
     echo round($currentPixels / $factor) , "\n"; // Output: Megapixel count, newline
     ?>
     ```
+### `doresize.php`
+* **Purpose**: Takes image filename as argument and resizes to 50 mega pixels as that is hardcoded into the script. Final file is renamed as new_[date-time].jpg irrespective of the original file and the original is removed, this is meant to be used with while loop in the corresponding shell. 
+* **Location**: `image-manipulation/doresize.php`
+
 
 ## Setup
 
