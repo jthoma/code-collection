@@ -11,7 +11,7 @@ echo '];' >> ../lib/handlers.js
 *  which actually reduces the possibility of handling 404 erros and running 
 *  into a Denial of service situation.
 */
-
+/* ROUTE_DEF_START */
 const DYNAMIC_ROUTES = [
   { method: "post", pattern: "cargo/tracking/{type}/{provider}", handler: "cargo_tracking.js" },
   { method: "post", pattern: "user/login/{username}/",handler:"post_user_login.js"},
@@ -21,6 +21,8 @@ const DYNAMIC_ROUTES = [
 const STATIC_ROUTES = [
   { method: "any", path: "/", handler: "homepage.js" }
 ];
+
+/* ROUTE_DEF_END */
 
 function mknam(s) {
   return s.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_');
