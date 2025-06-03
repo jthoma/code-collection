@@ -3,11 +3,9 @@
 [AWS EC2 Management Scripts for Termux](./aws/)
 
 
-## icon-gen/ 🎨 Icon & Splash Screen Generator Scripts (Termux Edition)
+## [🎨 Icon & Splash Screen Generator Scripts (Termux Edition)](./icon-gen/)
 
 A collection of Bash scripts for generating **Android** and **iOS** icons and splash screens from a base image. Designed to work inside a Termux environment using `ImageMagick`.
-
----
 
 ## 📦 Requirements
 
@@ -23,7 +21,7 @@ A collection of Bash scripts for generating **Android** and **iOS** icons and sp
 
 **In Ubuntu/Linux desktops:**  
 You may need to manually export it before running `ios-splash.sh`:
-
+- This  could give a slightly better performance as /dev/shm is a ramdisk and by default it could be half of active memory and you should consider that also before assigning this one as that might be a limitation, though linx also has it already defined as '/tmp' and globally writable by anybody
 ```bash
 export TMP=/dev/shm
 ```

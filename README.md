@@ -90,6 +90,6 @@ gterm - a console app in php to learn and test Travelport Galileo GDS Terminal C
 
 Few scripts which when used *responsibily* will help one to copy any number of dynamodb tables from one region to another. 
 
-## termux/
+## [termux/](termux/)
 
 My contributions to developers working in Android and Termux
