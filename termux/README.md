@@ -151,3 +151,52 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
 - Ensure input images have transparent or square-safe margins to avoid distortion.
 - Use `.png` images with alpha transparency for best results.
 - All these are doable in an Android Phone when installed with proper free tools 
+
+
+## Started working with nginx on termux since June 10, 2025
+
+How I managed it is 
+
+- pkg update
+- pkg install nginx
+
+- mkdir -p $TMP/nginx/www
+- nano nginx/nginx.conf
+
+# web-dev/nginx.conf
+  This one is the configuration file which I am using and
+all the caching is switched off as this is for development
+purposes only.
+
+- nginx -c $TMP/nginx/nginx.conf - to start
+- nginx -s stop - to stop
+
+# web-dev/jdebug.js — Jiju's Debug Inspector 🛠️
+
+A tiny, zero-dependency JavaScript utility to inspect values in-page when traditional debugging tools aren't available. Built specifically for mobile-first development using **Termux**, **nano**, and a **mobile browser** — and now enhanced with an **NGINX local server**.
+
+## ✨ Why jdbg?
+
+While developing small HTML/JS projects on Android via Termux, I needed a way to inspect variables and debug flow — but without access to browser dev tools.
+
+`console.log()`? Not visible.  
+`alert()`? Obnoxious.  
+**`jdbg.inspect()`? Just right.**
+
+
+## 🚀 Features
+
+- 🧠 **Simple**: Just drop in the script, call `jdbg.inspect(value)`
+- 📱 **Mobile-optimized**: Works directly in any mobile browser
+- ⚙️ **Self-contained**: No libraries, no console needed
+- 🔁 **Reusable**: Only creates one debug area per session
+- 💡 **Append-friendly**: Keeps previous messages (can be customized)
+
+---
+
+## 🔧 How to Use
+
+1. Add `jdbg.js` to your project:
+   ```html
+   <script src="jdbg.js"></script>
+
