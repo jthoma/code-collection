@@ -200,3 +200,11 @@ While developing small HTML/JS projects on Android via Termux, I needed a way to
    ```html
    <script src="jdbg.js"></script>
 
+# media/ media management and further in Android and Termux
+
+** cli can be clumsy but is precise and really fast when done correctly.
+
+# media/tsv.sh - timestamping those videos from different capture devices
+
+just pass the video file as argument which has the android format of file naming convention with the filename part before '_' as the starting timestamp.
+note that this is designed for youtube shorts or facebook reels and essentially will handle only second increments and will fail if the higher derivatives has to change in the video. 
