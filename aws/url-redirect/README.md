@@ -56,3 +56,4 @@ This shell script (`compress.sh`) automates the creation of short URLs using an 
 
 Though the script is my work, the idea behind is from an aws blogs article.
 [Read it here](https://aws.amazon.com/blogs/compute/build-a-serverless-private-url-shortener/)
+;) jthoma stands for Jiju Thomas Mathew, which is my full name

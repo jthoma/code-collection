@@ -59,3 +59,4 @@ While this project was initially a personal tool, I'm now open to potential cont
 This project was created as a personal tool for quick text editing tasks. The simplicity and client-side nature make it easily accessible and portable.
 
 The templates are in a variable tplval which is base64 encoded to include the newline and markup characters without issue. 
+;) jthoma stands for Jiju Thomas Mathew, which is my full name

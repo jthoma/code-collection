@@ -163,3 +163,4 @@ This is a useful script for dynamically updating security group ingress rules, e
 
 This script is a valuable tool for managing security group ingress rules in dynamic IP environments. Remember to prioritize security and implement error handling for production use. ;) Assessment of Google Gemini
  
+;) jthoma stands for Jiju Thomas Mathew, which is my full name

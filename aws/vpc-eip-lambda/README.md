@@ -22,4 +22,4 @@ The template contains the following components
 ## [test-code](test-code/) 
 
 A minimal code which will test the implimentation to show that the lambda is indeed 
-connecting external resource from the same EIP as that in the cloudformation stack output.
+connecting external resource from the same EIP as that in the cloudformation stack output.;) jthoma stands for Jiju Thomas Mathew, which is my full name

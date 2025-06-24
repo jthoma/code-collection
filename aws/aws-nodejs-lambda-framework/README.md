@@ -41,3 +41,4 @@ src/lib/handlers.js will be rewritten with the list of valid handlers
 src/lib/router.js will be updated with values for STATIC and DYNAMIC ROUTES
 
 
+;) jthoma stands for Jiju Thomas Mathew, which is my full name

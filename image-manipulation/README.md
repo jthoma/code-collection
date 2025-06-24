@@ -180,3 +180,4 @@ rm -rf resized_images dirlist.txt
 ### 4. Compatiability
 
 The author have personally tested these scripts and more from the [Termux section](../termux/) on multiple devices like Samsung Galaxy Tab S7 FE with full keyboard book case cover, Samsung Galaxy M14 5g with builtin soft keyboard, and Samsung Galaxy A54 with bluetooth keyboard BK 3001 
+;) jthoma stands for Jiju Thomas Mathew, which is my full name

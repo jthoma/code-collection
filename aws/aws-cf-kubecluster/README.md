@@ -10,4 +10,4 @@ Normally I do not run the -g, instead directly create a samconfig.toml ;) ofcour
 
 ![sam deploy output log](./aws-sam-deploy.png)
 
-[Kubernetes Cluster with Vagrant and VirtualBox](../../kubernetes-cluster) Similarly using Vagrant and VirtualBox, bit more easy as there we know the IP adresses and we have a common directory path mapped into the systems, whereas here these had to be worked out.
+[Kubernetes Cluster with Vagrant and VirtualBox](../../kubernetes-cluster) Similarly using Vagrant and VirtualBox, bit more easy as there we know the IP adresses and we have a common directory path mapped into the systems, whereas here these had to be worked out.;) jthoma stands for Jiju Thomas Mathew, which is my full name

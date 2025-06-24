@@ -47,3 +47,4 @@ Depends on ubuntu server and when run will configure a webserver with all requir
 
 Strips comments and blank new lines from code. 
 On a laravel project what I did was copy the full source to create a backup and then used find recursively to list out php files passing each to this strip utility. And the end result is code size shrinking from 169 Mb to 148 Mb For a production deployment it is best to do this as well as `composer install --no-dev ` which essentially remove the dev-dependencies as I have understood.
+;) jthoma stands for Jiju Thomas Mathew, which is my full name

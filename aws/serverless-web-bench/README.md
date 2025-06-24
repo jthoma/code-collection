@@ -108,4 +108,4 @@ This script allows you to measure the performance of a website by sending a spec
 * Avoid sending an excessive number of requests that could harm the target website's availability.
 * Respect the resources of the websites you are testing.
 
-By using this tool, you acknowledge and agree to use it for legitimate purposes only.
+By using this tool, you acknowledge and agree to use it for legitimate purposes only.;) jthoma stands for Jiju Thomas Mathew, which is my full name

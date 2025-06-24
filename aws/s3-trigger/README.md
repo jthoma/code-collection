@@ -18,4 +18,4 @@ once the function is deployed and the function arn is displayed in the output.
 
 ```
 aws s3api put-bucket-notification-configuration --bucket <bucketname> --notification-configuration file://cli-input/notification.json
-```
+```;) jthoma stands for Jiju Thomas Mathew, which is my full name

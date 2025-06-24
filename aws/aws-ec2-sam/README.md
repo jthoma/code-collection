@@ -10,3 +10,4 @@ sam deploy -g
 
 Will ask for the parameters and deploy into the account. Credentials should be configured beforehand and exported into environment.  
 
+;) jthoma stands for Jiju Thomas Mathew, which is my full name

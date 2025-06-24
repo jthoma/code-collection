@@ -6,4 +6,4 @@ Code written with the help of gemini.google.com and with a wee bit of bugfixing 
 * API Gateway to expose the Lambda
 * API Key to secure the API Gateway or limit usage or apply plans
 
-Make sure the variable values are updated in the script.js before using this.
+Make sure the variable values are updated in the script.js before using this.;) jthoma stands for Jiju Thomas Mathew, which is my full name

@@ -208,3 +208,4 @@ While developing small HTML/JS projects on Android via Termux, I needed a way to
 
 just pass the video file as argument which has the android format of file naming convention with the filename part before '_' as the starting timestamp.
 note that this is designed for youtube shorts or facebook reels and essentially will handle only second increments and will fail if the higher derivatives has to change in the video. 
+an update on June 24 overcomes this limitation and now video of any duration can be automatically done 
