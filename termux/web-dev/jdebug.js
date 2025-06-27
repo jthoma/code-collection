@@ -11,7 +11,7 @@ jdbg = {
      this.addwin();
    }
    var iarea = document.getElementById(this.dbgarea);
-   iarea.value = w;
+   iarea.value = (typeof(w) == "string" ) ? w : w.toString();
   },
   addwin: function(){
    this.dbgarea = this.getid();
