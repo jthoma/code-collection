@@ -1,0 +1,122 @@
+## My contributions to teams who  are working in Android and Termux
+
+## [🎨 Icon & Splash Screen Generator Scripts (Termux Edition)]
+
+A collection of Bash scripts for generating **Android** and **iOS** icons and splash screens from a base image. Designed to work inside a Termux environment using `ImageMagick`.
+
+## 📦 Requirements
+
+- [ImageMagick](https://imagemagick.org)
+- `$TMP` environment variable should be defined (used for temporary file storage).
+
+**In Termux:**  
+`$TMP` is automatically set to:
+
+```bash
+/data/data/com.termux/files/usr/tmp
+```
+
+**In Ubuntu/Linux desktops:**  
+You may need to manually export it before running `ios-splash.sh`:
+- This  could give a slightly better performance as /dev/shm is a ramdisk and by default it could be half of active memory and you should consider that also before assigning this one as that might be a limitation, though linx also has it already defined as '/tmp' and globally writable by anybody
+```bash
+export TMP=/dev/shm
+```
+
+### Install ImageMagick
+
+```bash
+# Termux
+pkg install imagemagick
+
+# Ubuntu/Debian
+sudo apt install imagemagick
+```
+
+---
+
+## 📁 Scripts Overview
+
+### 📱 `android-icons.sh`
+Generate Android app launcher icons in multiple resolutions.
+
+**Usage:**
+```bash
+bash android-icons.sh base.png
+```
+
+**Output:**
+- `drawable-ldpi-icon.png` (36x36)
+- `drawable-mdpi-icon.png` (48x48)
+- `drawable-hdpi-icon.png` (72x72)
+- `drawable-xhdpi-icon.png` (96x96)
+- `drawable-xxhdpi-icon.png` (144x144)
+- `drawable-xxxhdpi-icon.png` (192x192)
+
+---
+
+### 🖼 `android-screens.sh`
+Generate stylized background screens for various Android screen densities using fractals and blur effects.
+
+**Usage:**
+```bash
+bash android-screens.sh base.png
+```
+
+**Output:**
+- `drawable-port-*-screen.png` (portrait)
+- `drawable-land-*-screen.png` (landscape)
+
+---
+
+### 🚀 `android-splash.sh`
+Generate plain Android splash screens (resized from image without effects).
+
+**Usage:**
+```bash
+bash android-splash.sh portrait.png landscape.png
+```
+
+**Output:**
+- Portrait splash screens: `drawable-port-*.png`
+- Landscape splash screens: `drawable-land-*.png`
+
+---
+
+### 🍏 `ios-icons.sh`
+Generate all required iOS icons (including Retina, iPad, settings, etc.).
+
+**Usage:**
+```bash
+bash ios-icons.sh base.png
+```
+
+**Output:**
+- Icons from `29x29` to `180x180` including `@2x` and `@3x` variants.
+
+---
+
+### 💡 `ios-splash.sh`
+Generate iOS splash screens for different device resolutions with transparent backgrounds.
+
+**Usage:**
+```bash
+bash ios-splash.sh base.png
+```
+
+**Output:**
+- `Default-568h@2x~iphone.png`
+- `Default-667h.png`
+- `Default-736h.png`
+- `Default-Landscape-736h.png`
+- `Default-Landscape@2x~ipad.png`
+- `Default-Landscape~ipad.png`
+
+---
+
+## ✅ Notes
+
+- Ensure input images have transparent or square-safe margins to avoid distortion.
+- Use `.png` images with alpha transparency for best results.
+- All these are doable in an Android Phone when installed with proper free tools 
+
