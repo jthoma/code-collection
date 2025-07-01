@@ -1,122 +1,138 @@
-## My contributions to teams who  are working in Android and Termux
 
-## [🎨 Icon & Splash Screen Generator Scripts (Termux Edition)]
+# 🎨 Icon & Splash Screen Generator Scripts (Termux Edition)
 
-A collection of Bash scripts for generating **Android** and **iOS** icons and splash screens from a base image. Designed to work inside a Termux environment using `ImageMagick`.
+A collection of Bash scripts for generating **Android** and **iOS** icons and splash screens from a single base image. These scripts are optimized for the **Termux** environment on Android, but they can also be used on any Linux desktop with `ImageMagick` installed.
+
+-----
+
+## ✨ Features
+
+  * **Android Icon Generation:** Create app launcher icons for all standard screen densities (`ldpi` to `xxxhdpi`).
+  * **Android Splash Screens:** Generate plain splash screens or stylized fractal backgrounds for both portrait and landscape orientations.
+  * **iOS Asset Generation:** Produce a full set of icons and splash screens for various iOS devices and resolutions, including Retina and iPad.
+  * **Cross-Platform Compatibility:** Works seamlessly on Termux and other Linux environments like Ubuntu/Debian.
+  * **Simple Command-Line Usage:** Easy-to-use Bash scripts that run with a single command.
+
+-----
 
 ## 📦 Requirements
 
-- [ImageMagick](https://imagemagick.org)
-- `$TMP` environment variable should be defined (used for temporary file storage).
+  * **ImageMagick:** A powerful command-line image manipulation tool.
+  * **Bash:** A standard Unix shell.
 
-**In Termux:**  
-`$TMP` is automatically set to:
+### Installation
 
-```bash
-/data/data/com.termux/files/usr/tmp
-```
-
-**In Ubuntu/Linux desktops:**  
-You may need to manually export it before running `ios-splash.sh`:
-- This  could give a slightly better performance as /dev/shm is a ramdisk and by default it could be half of active memory and you should consider that also before assigning this one as that might be a limitation, though linx also has it already defined as '/tmp' and globally writable by anybody
-```bash
-export TMP=/dev/shm
-```
-
-### Install ImageMagick
+First, you need to install **ImageMagick** on your system:
 
 ```bash
-# Termux
+# For Termux
 pkg install imagemagick
 
-# Ubuntu/Debian
+# For Ubuntu/Debian
 sudo apt install imagemagick
 ```
 
----
+### Environment Variable (`$TMP`)
 
-## 📁 Scripts Overview
+These scripts use the `$TMP` environment variable for temporary file storage.
 
-### 📱 `android-icons.sh`
-Generate Android app launcher icons in multiple resolutions.
+  * **In Termux**, this is automatically defined, so no action is needed.
+  * **On Ubuntu/Linux desktops**, it's usually set to `/tmp`. For better performance, you can optionally export it to a RAM disk (e.g., `/dev/shm`), but be mindful of memory limitations.
+
+<!-- end list -->
+
+```bash
+# Optional: Export TMP to a RAM disk for better performance
+export TMP=/dev/shm
+```
+
+-----
+
+## 🚀 Getting Started
+
+Clone the repository to your local machine to get the scripts:
+
+```bash
+git clone https://github.com/jthoma/code-collection.git
+cd code-collection/termux/icon-gen
+```
+
+-----
+
+## 📁 Scripts & Usage
+
+Each script is designed for a specific task. Just run the script with your input image(s) as arguments.
+
+### **`android-icons.sh`**
+
+Generate Android app launcher icons for all standard screen densities from a base `.png` image.
 
 **Usage:**
+
 ```bash
-bash android-icons.sh base.png
+bash android-icons.sh path/to/your/base_icon.png
 ```
 
 **Output:**
-- `drawable-ldpi-icon.png` (36x36)
-- `drawable-mdpi-icon.png` (48x48)
-- `drawable-hdpi-icon.png` (72x72)
-- `drawable-xhdpi-icon.png` (96x96)
-- `drawable-xxhdpi-icon.png` (144x144)
-- `drawable-xxxhdpi-icon.png` (192x192)
+Icons will be generated in the current directory with names like `drawable-mdpi-icon.png`, `drawable-hdpi-icon.png`, etc.
 
----
+### **`android-screens.sh`**
 
-### 🖼 `android-screens.sh`
-Generate stylized background screens for various Android screen densities using fractals and blur effects.
+Create stylized Android background screens with fractal and blur effects for different screen densities.
 
 **Usage:**
+
 ```bash
-bash android-screens.sh base.png
+bash android-screens.sh path/to/your/base_image.png
 ```
 
 **Output:**
-- `drawable-port-*-screen.png` (portrait)
-- `drawable-land-*-screen.png` (landscape)
+Portrait (`drawable-port-*.png`) and landscape (`drawable-land-*.png`) screens will be generated.
 
----
+### **`android-splash.sh`**
 
-### 🚀 `android-splash.sh`
-Generate plain Android splash screens (resized from image without effects).
+Generate simple Android splash screens by resizing input images without any additional effects.
 
 **Usage:**
+
 ```bash
-bash android-splash.sh portrait.png landscape.png
+bash android-splash.sh path/to/portrait_image.png path/to/landscape_image.png
 ```
 
 **Output:**
-- Portrait splash screens: `drawable-port-*.png`
-- Landscape splash screens: `drawable-land-*.png`
+Splash screens will be created for different resolutions for both portrait and landscape orientations.
 
----
+### **`ios-icons.sh`**
 
-### 🍏 `ios-icons.sh`
-Generate all required iOS icons (including Retina, iPad, settings, etc.).
+Generate a complete set of iOS icons for various devices, including Retina, iPad, and settings.
 
 **Usage:**
+
 ```bash
-bash ios-icons.sh base.png
+bash ios-icons.sh path/to/your/base_icon.png
 ```
 
 **Output:**
-- Icons from `29x29` to `180x180` including `@2x` and `@3x` variants.
+Icons will be created in sizes from `29x29` to `180x180`, including `@2x` and `@3x` variants.
 
----
+### **`ios-splash.sh`**
 
-### 💡 `ios-splash.sh`
 Generate iOS splash screens for different device resolutions with transparent backgrounds.
 
 **Usage:**
+
 ```bash
-bash ios-splash.sh base.png
+bash ios-splash.sh path/to/your/base_image.png
 ```
 
 **Output:**
-- `Default-568h@2x~iphone.png`
-- `Default-667h.png`
-- `Default-736h.png`
-- `Default-Landscape-736h.png`
-- `Default-Landscape@2x~ipad.png`
-- `Default-Landscape~ipad.png`
+Splash screens like `Default-568h@2x~iphone.png`, `Default-667h.png`, etc.
 
----
+-----
 
-## ✅ Notes
+## ✅ Important Notes
 
-- Ensure input images have transparent or square-safe margins to avoid distortion.
-- Use `.png` images with alpha transparency for best results.
-- All these are doable in an Android Phone when installed with proper free tools 
+  * **Input Image Format:** Use `.png` images with alpha transparency for the best results.
+  * **Margins:** Ensure your input images have transparent margins or a square-safe design to prevent distortion during resizing.
+  * **Run on Android:** All these scripts can be run directly on an Android device using the Termux app with `ImageMagick` installed\!
 
