@@ -93,4 +93,5 @@ Few scripts which when used *responsibily* will help one to copy any number of d
 ## [termux/](termux/)
 
 My contributions to developers working in Android and Termux
-;) jthoma stands for Jiju Thomas Mathew, which is my full name
+
+jthoma stands for Jiju Thomas Mathew, which is my full name

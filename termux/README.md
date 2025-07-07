@@ -209,3 +209,11 @@ While developing small HTML/JS projects on Android via Termux, I needed a way to
 just pass the video file as argument which has the android format of file naming convention with the filename part before '_' as the starting timestamp.
 note that this is designed for youtube shorts or facebook reels and essentially will handle only second increments and will fail if the higher derivatives has to change in the video. 
 an update on June 24 overcomes this limitation and now video of any duration can be automatically done 
+
+# media/stv.sh - make a landscape hd video from potrait video on the go
+
+Portrait HD or 3:4 or 1:1 any dimension video will be converted to landscape 1080x1960.
+I agree that ffmpeg with its crop and resize filters can achieve this but will be processing the video in large chunks and might exhaust mobile capacities. crop and resize is happening only on frames one by one and the processing is efficient. One another aspect is that when using ffmpeg, we should do the calculations and identify the size and offset, whereas this script will take care of those automatically. Only that we should be careful not to provide landscape videos. 
+There could be distortion when resizing but this script will handle all calculations to
+efficiently choose the dimensions accordingly. And is tested on Android in Samsung
+Galaxy M14, A54 and Tab S7 FE
